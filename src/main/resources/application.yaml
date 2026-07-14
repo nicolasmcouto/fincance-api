@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: finance-api
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/finance
+    username: root
+    password: Nicolas2006
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  flyway:
+    enabled: false
