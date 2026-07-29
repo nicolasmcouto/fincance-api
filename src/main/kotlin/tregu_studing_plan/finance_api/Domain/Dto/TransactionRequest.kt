@@ -9,5 +9,6 @@ data class TransactionRequest(
     val amount: BigDecimal,
     val type: TransactionType,
     val date: LocalDateTime,
-    val accountId: Long,
+    val senderId: Long,
+    val receiverId: Long,
 )

@@ -49,6 +49,7 @@ class TransactionController(
         amount = request.amount,
         type = request.type,
         date = request.date,
-        account = accountService.findById(request.accountId),
+        sender = accountService.findById(request.senderId),
+        receiver = accountService.findById(request.receiverId),
     )
 }

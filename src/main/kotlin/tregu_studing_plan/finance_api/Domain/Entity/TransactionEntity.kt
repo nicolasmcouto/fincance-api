@@ -32,8 +32,12 @@ class TransactionEntity(
     var date: LocalDateTime,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
-    var account: AccountEntity,
+    @JoinColumn(name = "sender_id", nullable = false)
+    var sender: AccountEntity,
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "receiver_id", nullable = false)
+    var receiver: AccountEntity,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,8 @@
 package tregu_studing_plan.finance_api.Controller
 
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -26,6 +29,7 @@ class AccountController(
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Long): AccountEntity = accountService.findById(id)
 
+    @CacheEvict(value=["accounts"], key = "#transation.account.id")
     @PostMapping
     fun create(@RequestBody request: AccountRequest): ResponseEntity<AccountEntity> {
         val created = accountService.create(
@@ -38,6 +42,7 @@ class AccountController(
         return ResponseEntity.status(HttpStatus.CREATED).body(created)
     }
 
+    @CacheEvict(value=["accounts"], key = "#transation.account.id")
     @PutMapping("/{id}")
     fun update(@PathVariable id: Long, @RequestBody request: AccountRequest): AccountEntity =
         accountService.update(
@@ -48,7 +53,6 @@ class AccountController(
                 balance = request.balance,
             ),
         )
-
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<Void> {
         accountService.delete(id)

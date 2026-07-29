@@ -22,6 +22,12 @@ class GlobalExceptionHandler {
     @ExceptionHandler(TransactionNotFoundException::class)
     fun handleTransactionNotFound(ex: TransactionNotFoundException) = build(HttpStatus.NOT_FOUND, ex.message)
 
+    @ExceptionHandler(InsufficientBalanceException::class)
+    fun handleInsufficientBalance(ex: InsufficientBalanceException) = build(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+
+    @ExceptionHandler(SameAccountTransferException::class)
+    fun handleSameAccountTransfer(ex: SameAccountTransferException) = build(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+
     private fun build(status: HttpStatus, message: String?): ResponseEntity<ApiError> {
         val body = ApiError(
             timestamp = LocalDateTime.now(),

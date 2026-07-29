@@ -14,3 +14,9 @@ spring:
 
   flyway:
     enabled: false
+
+    spring:
+      cache:
+        type: caffeine
+        caffeine:
+          spec: maximumSize=500,expireAfterWrite=10m
