@@ -15,13 +15,12 @@ spring:
   flyway:
     enabled: true
 
-    spring:
-      cache:
-        type: caffeine
-        caffeine:
-          spec: maximumSize=500,expireAfterWrite=10m
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=10m
 
-  jwt:
-    secret: "uma-chave-secreta-bem-longa-com-no-minimo-256-bits-troque-em-producao"
-    access-expiration: 900000       # 15 minutos em ms
-    refresh-expiration: 604800000   # 7 dias em ms
+jwt:
+  secret: "uma-chave-secreta-bem-longa-com-no-minimo-256-bits-troque-em-producao"
+  access-expiration: 900000       # 15 minutos em ms
+  refresh-expiration: 604800000   # 7 dias em ms

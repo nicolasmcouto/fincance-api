@@ -1,6 +1,5 @@
 package tregu_studing_plan.finance_api.Security
 
-import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
@@ -12,12 +11,12 @@ import javax.crypto.SecretKey
 @Service
 class JwtService(
     @Value("\${jwt.secret}") private val secret: String,
-    @Value("\${jwt.acess-expiration}") private val acessExpiration: Long,
+    @Value("\${jwt.access-expiration}") private val acessExpiration: Long,
     @Value("\${jwt.refresh-expiration}") private val refreshExpiration: Long,
 ) {
     private val key: SecretKey = Keys.hmacShaKeyFor(secret.toByteArray())
 
-    fun generateAcessToken(email: String, roles: List<String>): String {
+    fun generateAccessToken(email: String, roles: List<String>): String {
         return Jwts.builder()
             .subject(email)
             .claim("roles", roles)
@@ -26,7 +25,7 @@ class JwtService(
             .signWith(key)
             .compact()
     }
-    fun generateJwtToken(email: String): String {
+    fun generateRefreshToken(email: String): String {
         return Jwts.builder()
             .subject(email)
             .issuedAt(Date())
@@ -48,7 +47,7 @@ class JwtService(
     fun isValid(token: String): Boolean {
         return try{
             val claims = parseClaims(token)
-            claims.expiration.before(Date())
+            claims.expiration.after(Date())
         } catch (e: Exception){
             false
         }

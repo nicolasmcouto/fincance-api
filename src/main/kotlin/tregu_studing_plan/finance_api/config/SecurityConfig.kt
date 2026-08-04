@@ -15,7 +15,6 @@ class SecurityConfig {
         http {
             csrf { disable() }
             formLogin { disable() }
-            httpBasic { }
 
             authorizeHttpRequests {
                 authorize(HttpMethod.POST, "/auth/registrar", permitAll)
