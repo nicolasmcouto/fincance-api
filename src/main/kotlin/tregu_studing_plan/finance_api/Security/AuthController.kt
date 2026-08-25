@@ -44,4 +44,10 @@ class AuthController(
         // Reaproveita o refresh (ou gere um novo, se quiser rotação)
         return ResponseEntity.ok(TokenResponse(newAccess, req.refreshToken))
     }
+
+    @PostMapping("/registrar")
+    fun registrar(@RequestBody req: RegisterRequest): ResponseEntity<Void> {
+        userService.register(req.email, req.password)
+        return ResponseEntity.status(201).build()
+    }
 }
