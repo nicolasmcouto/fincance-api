@@ -37,6 +37,11 @@ class JwtService(
         return parseClaims(email).subject
     }
 
+    fun extractRoles(token: String): List<String> {
+        @Suppress("UNCHECKED_CAST")
+        return parseClaims(token)["roles"] as? List<String> ?: emptyList()
+    }
+
     private fun parseClaims(token: String) =
         Jwts.parser()
             .verifyWith(key)
