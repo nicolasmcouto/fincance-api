@@ -1,4 +1,4 @@
-package tregu_studing_plan.finance_api.Security
+package tregu_studing_plan.finance_api.Service
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys

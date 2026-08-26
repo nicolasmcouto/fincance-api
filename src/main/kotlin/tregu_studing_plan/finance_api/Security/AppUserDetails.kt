@@ -3,6 +3,7 @@ package tregu_studing_plan.finance_api.Security
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import tregu_studing_plan.finance_api.Domain.Entity.UserEntity
 
 class AppUserDetails(private val user: UserEntity) : UserDetails {
 

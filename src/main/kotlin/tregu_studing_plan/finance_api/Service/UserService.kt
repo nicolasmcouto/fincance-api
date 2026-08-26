@@ -1,7 +1,10 @@
-package tregu_studing_plan.finance_api.Security
+package tregu_studing_plan.finance_api.Service
 
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import tregu_studing_plan.finance_api.Security.AppUserDetails
+import tregu_studing_plan.finance_api.Domain.Entity.UserEntity
+import tregu_studing_plan.finance_api.Domain.Repository.UserRepository
 
 @Service
 class UserService(
