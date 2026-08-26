@@ -31,9 +31,9 @@ class JwtAuthFilter(
 
         if (jwtService.isValid(token)) {
             val email = jwtService.extractEmail(token)
-            // Aqui você poderia recarregar roles; simplificado:
+            val roles = jwtService.extractRoles(token)
             val auth = UsernamePasswordAuthenticationToken(
-                email, null, listOf(SimpleGrantedAuthority("ROLE_USER"))
+                email, null, roles.map { SimpleGrantedAuthority(it) }
             )
             // Marca o usuário como autenticado no contexto do Spring
             SecurityContextHolder.getContext().authentication = auth
