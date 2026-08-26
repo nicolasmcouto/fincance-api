@@ -22,7 +22,7 @@ class TransactionService(
     @Transactional(readOnly = true)
     fun findAll(): List<TransactionEntity> = transactionRepository.findAll()
 
-    @Cacheable(value = ["accounts"], key = "#id")
+    @Cacheable(value = ["transactions"], key = "#id")
     @Transactional(readOnly = true)
     fun findById(id: Long): TransactionEntity =
         transactionRepository.findById(id).orElseThrow { TransactionNotFoundException(id) }
@@ -32,7 +32,7 @@ class TransactionService(
         transfer(transaction)
         return transactionRepository.save(transaction)
     }
-    @CachePut(value = ["accounts"], key = "#result.id")
+    @CachePut(value = ["transactions"], key = "#result.id")
     fun update(id: Long, updated: TransactionEntity): TransactionEntity {
         val existing = findById(id)
         reverseTransfer(existing)
@@ -48,7 +48,7 @@ class TransactionService(
         transfer(existing)
         return transactionRepository.save(existing)
     }
-    @CacheEvict
+    @CacheEvict(value = ["transactions"], key = "#id")
     fun delete(id: Long) {
         val transaction = findById(id)
         reverseTransfer(transaction)

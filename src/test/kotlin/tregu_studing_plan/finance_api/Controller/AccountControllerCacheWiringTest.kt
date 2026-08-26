@@ -1,6 +1,5 @@
 package tregu_studing_plan.finance_api.Controller
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -12,23 +11,17 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 /**
- * BUG CONHECIDO — estes testes ficam desabilitados ate a correcao.
+ * Regressao do bug de cache que existia em `AccountController.create`/`update`:
+ * as duas rotas carregavam `@CacheEvict(key = "#transation.account.id")`, um
+ * parametro que nao existe no metodo. O SpEL resolvia para `null` e a chamada
+ * estourava `SpelEvaluationException: EL1007E: Property or field 'account'
+ * cannot be found on null` assim que o proxy de cache do `@EnableCaching`
+ * interceptava o metodo — por isso o bug so aparecia com o contexto real de pe,
+ * nunca nos testes unitarios de `AccountControllerTest` (que instanciam o
+ * controller direto, sem proxy).
  *
- * `AccountController.create` e `AccountController.update` carregam
- * `@CacheEvict(value=["accounts"], key = "#transation.account.id")`.
- * O parametro `#transation` nao existe nesses metodos (nem com esse nome, nem
- * com esse tipo), entao o SpEL resolve para `null` e a chamada estoura:
- *
- *     SpelEvaluationException: EL1007E: Property or field 'account' cannot be found on null
- *
- * Como `@EnableCaching` faz o Spring criar um proxy de cache tambem para o
- * controller, o erro so aparece com o contexto real de pe — os testes unitarios
- * de `AccountControllerTest` instanciam o controller direto e passam.
- * Efeito em producao: POST /accounts e PUT /accounts/{id} devolvem 500.
- *
- * Correcao: remover as duas anotacoes do controller. A invalidacao do cache
+ * Corrigido removendo as duas anotacoes do controller: a invalidacao do cache
  * "accounts" ja e feita corretamente em `AccountService` (@CachePut/@CacheEvict).
- * Feito isso, apague o @Disabled destes testes.
  */
 @SpringBootTest(
     properties = [
@@ -41,7 +34,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
     ],
 )
 @AutoConfigureMockMvc(addFilters = false)
-@Disabled("Bug aberto: @CacheEvict com SpEL invalido em AccountController quebra POST/PUT em runtime")
 class AccountControllerCacheWiringTest {
 
     @Autowired private lateinit var mvc: MockMvc
