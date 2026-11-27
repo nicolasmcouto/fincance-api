@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service
 import java.util.Date
 import javax.crypto.SecretKey
 
+enum class TokenType { ACCESS, REFRESH }
 
 @Service
 class JwtService(
@@ -20,6 +21,7 @@ class JwtService(
         return Jwts.builder()
             .subject(email)
             .claim("roles", roles)
+            .claim(TYPE_CLAIM, TokenType.ACCESS.name)
             .issuedAt(Date())
             .expiration(Date(System.currentTimeMillis() + acessExpiration))
             .signWith(key)
@@ -28,6 +30,7 @@ class JwtService(
     fun generateRefreshToken(email: String): String {
         return Jwts.builder()
             .subject(email)
+            .claim(TYPE_CLAIM, TokenType.REFRESH.name)
             .issuedAt(Date())
             .expiration(Date(System.currentTimeMillis() + refreshExpiration))
             .signWith(key)
@@ -49,12 +52,18 @@ class JwtService(
             .parseSignedClaims(token)
             .payload
 
-    fun isValid(token: String): Boolean {
-        return try{
+    fun isValid(token: String, expectedType: TokenType): Boolean {
+        return try {
             val claims = parseClaims(token)
-            claims.expiration.after(Date())
-        } catch (e: Exception){
+            val naoExpirou = claims.expiration.after(Date())
+            val tipoCerto = claims[TYPE_CLAIM] == expectedType.name
+            naoExpirou && tipoCerto
+        } catch (e: Exception) {
             false
         }
+    }
+
+    private companion object {
+        const val TYPE_CLAIM = "type"
     }
 }

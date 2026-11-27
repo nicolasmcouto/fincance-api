@@ -1,5 +1,6 @@
 package tregu_studing_plan.finance_api.Controller
 
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -29,13 +30,13 @@ class TransactionController(
     fun findById(@PathVariable id: Long): TransactionEntity = transactionService.findById(id)
 
     @PostMapping
-    fun create(@RequestBody request: TransactionRequest): ResponseEntity<TransactionEntity> {
+    fun create(@Valid@RequestBody  request: TransactionRequest): ResponseEntity<TransactionEntity> {
         val created = transactionService.create(toEntity(request))
         return ResponseEntity.status(HttpStatus.CREATED).body(created)
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody request: TransactionRequest): TransactionEntity =
+    fun update( @PathVariable id: Long,@Valid @RequestBody request: TransactionRequest): TransactionEntity =
         transactionService.update(id, toEntity(request))
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,6 @@
 package tregu_studing_plan.finance_api.Controller
 
+import jakarta.validation.Valid
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.CachePut
 import org.springframework.cache.annotation.Cacheable
@@ -29,9 +30,8 @@ class AccountController(
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Long): AccountEntity = accountService.findById(id)
 
-    @CacheEvict(value=["accounts"], key = "#transation.account.id")
     @PostMapping
-    fun create(@RequestBody request: AccountRequest): ResponseEntity<AccountEntity> {
+    fun create(@Valid @RequestBody request: AccountRequest): ResponseEntity<AccountEntity> {
         val created = accountService.create(
             AccountEntity(
                 ownerName = request.ownerName,
@@ -42,9 +42,8 @@ class AccountController(
         return ResponseEntity.status(HttpStatus.CREATED).body(created)
     }
 
-    @CacheEvict(value=["accounts"], key = "#transation.account.id")
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody request: AccountRequest): AccountEntity =
+    fun update( @PathVariable id: Long, @Valid @RequestBody request: AccountRequest): AccountEntity =
         accountService.update(
             id,
             AccountEntity(
