@@ -1,4 +1,4 @@
-package tregu_studing_plan.finance_api.Security
+package tregu_studing_plan.finance_api.Domain.Entity
 
 import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column

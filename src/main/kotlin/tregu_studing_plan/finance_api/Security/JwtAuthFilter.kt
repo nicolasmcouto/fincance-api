@@ -8,6 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import tregu_studing_plan.finance_api.Service.JwtService
+import tregu_studing_plan.finance_api.Service.TokenType
 
 @Component
 class JwtAuthFilter(
@@ -29,7 +31,7 @@ class JwtAuthFilter(
 
         val token = header.substring(7) // remove "Bearer "
 
-        if (jwtService.isValid(token)) {
+        if (jwtService.isValid(token, TokenType.ACCESS)) {
             val email = jwtService.extractEmail(token)
             val roles = jwtService.extractRoles(token)
             val auth = UsernamePasswordAuthenticationToken(

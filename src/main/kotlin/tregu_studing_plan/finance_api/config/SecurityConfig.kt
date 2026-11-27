@@ -31,6 +31,7 @@ class SecurityConfig(
 
             authorizeHttpRequests {
                 authorize("/auth/**", permitAll)
+                authorize("/error", permitAll)
                 authorize("/actuator/health", permitAll)
 
                 authorize(anyRequest, authenticated)
