@@ -135,7 +135,7 @@ data class ProdutoRequest(
 Em Kotlin, `val nome: String` dentro do construtor é ao mesmo tempo **parâmetro do construtor**, **propriedade** e **campo** (field). Quando você escreve `@NotBlank val nome`, em qual dos três a anotação vai parar?
 
 - **Antigamente**, ela ia só para o *parâmetro*. O Hibernate Validator olha o *campo*, então a validação era **ignorada em silêncio**. A solução era escrever `@field:NotBlank`.
-- **No seu projeto**, o `build.gradle.kts` tem o flag `-Xannotation-default-target=param-property`, que faz a anotação ir para o parâmetro **e** para o campo. Por isso `@NotBlank` sozinho funciona. Eu testei antes de escrever este guia.
+- **No seu projeto**, o `../build.gradle.kts` tem o flag `-Xannotation-default-target=param-property`, que faz a anotação ir para o parâmetro **e** para o campo. Por isso `@NotBlank` sozinho funciona. Eu testei antes de escrever este guia.
 
 > **Recomendação:** use `@field:NotBlank` mesmo assim. Deixa explícito o que está acontecendo e funciona em qualquer projeto Kotlin, com ou sem o flag.
 
@@ -160,7 +160,7 @@ Se um DTO tivesse outro DTO dentro (por exemplo, `val endereco: EnderecoRequest`
 > Faça um passo de cada vez e rode os testes ao final de cada um. Quando travar, abra as dicas na ordem: elas vão da mais vaga para a mais direta.
 
 ### Passo 1: adicionar a dependência
-No `build.gradle.kts`, junto das outras `implementation`:
+No `../build.gradle.kts`, junto das outras `implementation`:
 
 ```kotlin
 implementation("org.springframework.boot:spring-boot-starter-validation")
